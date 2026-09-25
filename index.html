@@ -17,10 +17,9 @@
         #character {
             width: 400px;
             opacity: 0;
-            transition: opacity 0.2s;
+            transition: opacity 0.1s;
         }
 
-        /* Full-screen flash */
         #flash {
             position: fixed;
             top: 0;
@@ -41,15 +40,15 @@
                 opacity: 0;
             }
 
-            15% {
+            10% {
                 opacity: 1;
             }
 
-            30% {
-                opacity: 0.2;
+            25% {
+                opacity: 0;
             }
 
-            45% {
+            40% {
                 opacity: 1;
             }
 
@@ -58,29 +57,27 @@
             }
         }
 
-        .show {
-            opacity: 1 !important;
-        }
-
-        button {
-            position: absolute;
+        #button {
+            position: fixed;
             bottom: 30px;
-            padding: 12px 25px;
-            font-size: 18px;
+            padding: 15px 30px;
+            font-size: 20px;
             cursor: pointer;
+            z-index: 10;
         }
     </style>
 </head>
 
 <body>
 
-    <!-- Image -->
+    <!-- Your image -->
     <img id="character" src="FNAF2BB.webp" alt="Balloons">
 
-    <!-- Flash -->
+    <!-- Flash effect -->
     <div id="flash"></div>
 
-    <button onclick="scare()">Click Me</button>
+    <!-- Button -->
+    <button id="button" onclick="scare()">Click Me</button>
 
     <script>
         function scare() {
@@ -89,16 +86,19 @@
             const flash = document.getElementById("flash");
 
             // Hide image
-            image.classList.remove("show");
+            image.style.opacity = "0";
 
-            // Restart flash animation
+            // Restart the flash animation
             flash.classList.remove("flash-animation");
+
+            // Forces the animation to restart
             void flash.offsetWidth;
+
             flash.classList.add("flash-animation");
 
-            // Make image appear after the flash
+            // Show image after flash
             setTimeout(function() {
-                image.classList.add("show");
+                image.style.opacity = "1";
             }, 450);
         }
     </script>
