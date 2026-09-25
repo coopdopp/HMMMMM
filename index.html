@@ -57,29 +57,43 @@
             }
         }
 
-        #button {
+        .buttons {
             position: fixed;
             bottom: 30px;
-            padding: 15px 30px;
-            font-size: 20px;
-            cursor: pointer;
+            display: flex;
+            gap: 15px;
             z-index: 10;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            cursor: pointer;
         }
     </style>
 </head>
 
 <body>
 
-    <!-- Your image -->
+    <!-- Image -->
     <img id="character" src="FNAF2BB.webp" alt="Balloons">
 
-    <!-- Flash effect -->
+    <!-- Flash -->
     <div id="flash"></div>
 
-    <!-- Button -->
-    <button id="button" onclick="scare()">Click Me</button>
+    <!-- Audio -->
+    <audio id="sound">
+        <source src="jumpscare.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Buttons -->
+    <div class="buttons">
+        <button onclick="scare()">Click Me</button>
+        <button onclick="playAudio()">🔊 Play Audio</button>
+    </div>
 
     <script>
+
         function scare() {
 
             const image = document.getElementById("character");
@@ -88,19 +102,28 @@
             // Hide image
             image.style.opacity = "0";
 
-            // Restart the flash animation
+            // Restart flash
             flash.classList.remove("flash-animation");
-
-            // Forces the animation to restart
             void flash.offsetWidth;
-
             flash.classList.add("flash-animation");
 
-            // Show image after flash
+            // Show image
             setTimeout(function() {
                 image.style.opacity = "1";
             }, 450);
         }
+
+        function playAudio() {
+
+            const sound = document.getElementById("sound");
+
+            // Restart audio from beginning
+            sound.currentTime = 0;
+
+            // Play audio
+            sound.play();
+        }
+
     </script>
 
 </body>
