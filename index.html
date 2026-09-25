@@ -12,6 +12,16 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            position: relative;
+        }
+
+        /* Container ensures the image doesn't block underlying or overlaying elements */
+        .image-container {
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1;
         }
 
         #character {
@@ -29,6 +39,7 @@
             background: white;
             opacity: 0;
             pointer-events: none;
+            z-index: 5;
         }
 
         .flash-animation {
@@ -36,94 +47,88 @@
         }
 
         @keyframes flash {
-            0% {
-                opacity: 0;
-            }
-
-            10% {
-                opacity: 1;
-            }
-
-            25% {
-                opacity: 0;
-            }
-
-            40% {
-                opacity: 1;
-            }
-
-            100% {
-                opacity: 0;
-            }
+            0% { opacity: 0; }
+            10% { opacity: 1; }
+            25% { opacity: 0; }
+            40% { opacity: 1; }
+            100% { opacity: 0; }
         }
 
         .buttons {
-            position: fixed;
+            position: absolute;
             bottom: 30px;
             display: flex;
             gap: 15px;
-            z-index: 10;
+            z-index: 10; /* Keeps buttons safely on top of everything */
         }
 
         button {
             padding: 15px 30px;
             font-size: 18px;
             cursor: pointer;
+            background: #fff;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        
+        button:hover {
+            background: #ddd;
         }
     </style>
 </head>
 
 <body>
 
-    <!-- Image -->
-    <img id="character" src="FNAF2BB.webp" alt="Balloons">
+    <!-- Wrapped image inside a low-index layer container -->
+    <div class="image-container">
+        <img id="character" src="FNAF2BB.webp" alt="Balloons">
+    </div>
 
-    <!-- Flash -->
+    <!-- Flash Layer -->
     <div id="flash"></div>
 
-    <!-- Audio -->
+    <!-- Audio Element -->
     <audio id="sound">
         <source src="jumpscare.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- Buttons -->
+    <!-- Interactive Layer -->
     <div class="buttons">
         <button onclick="scare()">Click Me</button>
         <button onclick="playAudio()">🔊 Play Audio</button>
     </div>
 
     <script>
-
         function scare() {
-
             const image = document.getElementById("character");
             const flash = document.getElementById("flash");
 
-            // Hide image
+            // Hide image initially
             image.style.opacity = "0";
 
-            // Restart flash
+            // Trigger flash animation reset
             flash.classList.remove("flash-animation");
             void flash.offsetWidth;
             flash.classList.add("flash-animation");
 
-            // Show image
+            // Display image right after the flash peak
             setTimeout(function() {
                 image.style.opacity = "1";
             }, 450);
         }
 
         function playAudio() {
-
             const sound = document.getElementById("sound");
 
-            // Restart audio from beginning
+            // Reset track playback position 
             sound.currentTime = 0;
 
-            // Play audio
-            sound.play();
+            // Trigger execution block handling for standard browser policies
+            sound.play().catch(function(error) {
+                console.log("Audio playback failed or required user activation first:", error);
+            });
         }
-
     </script>
 
 </body>
